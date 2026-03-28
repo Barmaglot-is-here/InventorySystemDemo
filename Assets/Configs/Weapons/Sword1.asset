@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8da21c99e4413c469075b0bb1ff70e3, type: 3}
+  m_Name: Sword1
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Configs.EquipmentConfig
+  <Icon>k__BackingField: {fileID: 5601323976189978565, guid: d60ed6033dc6b814f8f78c369d6c344c, type: 3}
+  <Name>k__BackingField: Sword1
+  <Description>k__BackingField: Descr1
