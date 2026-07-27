@@ -31,21 +31,21 @@ namespace Game.EquipmentSystem
             Slots = new InventorySlot[] { Head, Body, Hand1, Hand2, Neck, Pouch1, Pouch2 };
         }
 
-        public void Equip(EquipmnentItem item)
+        public void Equip(IEquipmnentItem item)
         {
             var slot = GetSlot(item.Type);
 
             slot.Place(item);
         }
 
-        public void DisplacementEquip(EquipmnentItem item, out InventoryItem displcedItem)
+        public void DisplacementEquip(IEquipmnentItem item, out IInventoryItem displcedItem)
         {
             var slot = GetSlot(item.Type);
 
             slot.DisplacementPlace(item, out displcedItem);
         }
 
-        public void Unequip(InventoryItem item)
+        public void Unequip(IInventoryItem item)
         {
             InventorySlot slot = GetSlotWithItem(item);
 
@@ -64,7 +64,7 @@ namespace Game.EquipmentSystem
             };
         }
 
-        private InventorySlot GetSlotWithItem(InventoryItem item)
+        private InventorySlot GetSlotWithItem(IInventoryItem item)
         {
             var slot = Slots.FirstOrDefault(slot => slot.Item == item);
 

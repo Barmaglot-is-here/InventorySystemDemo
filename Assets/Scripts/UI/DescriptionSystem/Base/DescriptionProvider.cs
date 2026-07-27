@@ -21,7 +21,7 @@ namespace Game.UI.DescriptionSystem
 
         protected virtual void Awake()
         {
-            _view               = FindFirstObjectByType<TView>(FindObjectsInactive.Include);
+            _view               = FindAnyObjectByType<TView>(FindObjectsInactive.Include);
             _waitForSeconds     = new(_showDelaySeconds);
         }
 

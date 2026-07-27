@@ -8,7 +8,7 @@ namespace Game.UI.DescriptionSystem
     {
         private SlotView _slotView;
 
-        private InventoryItem Item => _slotView.CurrentItem;
+        private IInventoryItem Item => _slotView.CurrentItem;
 
         protected override bool CanShow => Item != null;
 

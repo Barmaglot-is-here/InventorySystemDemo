@@ -16,7 +16,7 @@ namespace Game.UI
 
         private Inventory _inventory;
 
-        public event Action<InventoryItem> OnSlotDoubleClick;
+        public event Action<IInventoryItem> OnSlotDoubleClick;
 
         public void Bind(Inventory inventory)
         {
@@ -32,7 +32,7 @@ namespace Game.UI
                 view.OnDoubleClick += OnDoubleClick;
         }
 
-        private void OnDoubleClick(InventoryItem item) => OnSlotDoubleClick.Invoke(item);
+        private void OnDoubleClick(IInventoryItem item) => OnSlotDoubleClick.Invoke(item);
 
         private void OnDestroy()
         {

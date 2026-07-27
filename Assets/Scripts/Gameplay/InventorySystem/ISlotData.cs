@@ -5,7 +5,7 @@ namespace Game.InventorySystem
     public interface ISlotData
     {
         bool IsEmpty { get; }
-        InventoryItem Item { get; }
-        event Action<InventoryItem> OnPlace;
+        IInventoryItem Item { get; }
+        event Action<IInventoryItem> OnPlace;
     }
 }

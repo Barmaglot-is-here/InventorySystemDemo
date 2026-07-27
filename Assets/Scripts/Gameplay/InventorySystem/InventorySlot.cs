@@ -4,9 +4,9 @@ namespace Game.InventorySystem
 {
     public class InventorySlot : ISlotData
     {
-        private InventoryItem _item;
+        private IInventoryItem _item;
 
-        public InventoryItem Item
+        public IInventoryItem Item
         {
             get => _item;
             private set
@@ -19,84 +19,87 @@ namespace Game.InventorySystem
 
         public bool IsEmpty => Item == null;
 
-        public event Action<InventoryItem> OnPlace;
+        public event Action<IInventoryItem> OnPlace;
 
-        public void Place(InventoryItem item)
+        public void Place(IInventoryItem item)
         {
-            if (!IsEmpty)
-                throw new Exception("Slot is busy");
-
             ValidateItem(item);
+
+            if (!IsEmpty)
+                throw new InvalidOperationException("Slot is busy");
 
             Item = item;
         }
 
-        protected virtual void ValidateItem(InventoryItem item)
+        public bool TryPlace(IInventoryItem item)
+        {
+            if (CanPlace(item))
+                Item = item;
+
+            return false;
+        }
+
+        private bool CanPlace(IInventoryItem item)
+        {
+            if (!IsEmpty || !IsItemValid(item))
+                return false;
+
+            return true;
+        }
+
+        protected virtual void ValidateItem(IInventoryItem item)
         {
             if (item == null)
-                throw new ArgumentNullException("Item is null. Use Emptify() to remove item");
+                throw new ArgumentNullException("Item is null. Use Emptify() to remove them");
         }
 
-        public void DisplacementPlace(InventoryItem item, out InventoryItem desplacedItem)
+        protected virtual bool IsItemValid(IInventoryItem item)
         {
-            desplacedItem = Item;
+            if (item == null)
+                return false;
 
-            Emptify();
-            Place(item);
+            return true;
         }
 
-        public bool TryDisplacementPlace(InventoryItem item, out InventoryItem desplacedItem)
+        public void DisplacementPlace(IInventoryItem item, out IInventoryItem desplacedItem)
         {
+            ValidateItem(item);
+
             desplacedItem = Item;
+            Item = item;
+        }
 
-            Emptify();
-
-            if (!TryPlace(item))
+        public bool TryDisplacementPlace(IInventoryItem item, out IInventoryItem desplacedItem)
+        {
+            if (!IsItemValid(item))
             {
-                Item = desplacedItem;
-
                 desplacedItem = null;
 
                 return false;
             }
 
-            return true;
-        }
-
-        public bool TryPlace(InventoryItem item)
-        {
-            if (!IsEmpty || !IsItemValid(item))
-                return false;
-
+            desplacedItem = Item;
             Item = item;
-
-            return true;
-        }
-
-        protected virtual bool IsItemValid(InventoryItem item)
-        {
-            if (item == null)
-                return false;
 
             return true;
         }
 
         public void Swap(InventorySlot otherSlot)
         {
-            if (!otherSlot.TryDisplacementPlace(Item, out var dispacedItem))
-                return;
+            if (otherSlot == null)
+                throw new ArgumentNullException(nameof(otherSlot));
 
-            Emptify();
+            if (ReferenceEquals(this, otherSlot))
+                throw new InvalidOperationException("Can't swap by it self");
 
-            if (dispacedItem == null)
-                return;
+            var currentSlotItem = _item;
+            var otherSlotItem   = otherSlot.Item;
 
-            if (!TryPlace(dispacedItem))
+            if ((currentSlotItem == null || otherSlot.IsItemValid(currentSlotItem)) && 
+                (otherSlotItem == null || IsItemValid(otherSlotItem)))
             {
-                Place(otherSlot.Item);
-
-                otherSlot.Emptify();
-                otherSlot.Place(dispacedItem);
+                Item            = otherSlotItem;
+                otherSlot.Item  = currentSlotItem;
             }
         }
 

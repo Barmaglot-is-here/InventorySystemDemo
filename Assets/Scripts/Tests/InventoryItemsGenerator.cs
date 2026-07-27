@@ -22,7 +22,7 @@ namespace Game.Tests
             }
         }
 
-        private InventoryItem GenerateRandom()
+        private IInventoryItem GenerateRandom()
         {
             var typeIndex = Random.Range(0, 2);
 

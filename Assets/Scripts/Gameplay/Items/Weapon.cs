@@ -1,9 +1,10 @@
-﻿using Game.Configs;
+﻿using Assets.Scripts.Gameplay.Items;
+using Game.Configs;
 using Game.EquipmentSystem;
 
 namespace Game.Items
 {
-    public class Weapon : EquipmnentItem
+    public class Weapon : BaseItem
     {
         public override SlotType Type => SlotType.Weapon;
 

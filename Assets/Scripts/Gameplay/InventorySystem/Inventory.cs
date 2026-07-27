@@ -22,13 +22,13 @@ namespace Game.InventorySystem
                 _slots.Add(new InventorySlot());
         }
 
-        public void Add(InventoryItem item, int slot = -1)
+        public void Add(IInventoryItem item, int slot = -1)
         {
             if (item == null)
                 throw new ArgumentNullException();
 
             if (ItemsCount >= Size)
-                throw new Exception("Inventory overflow");
+                throw new InvalidOperationException("Inventory overflow");
 
             if (slot == -1)
                 PlaceAtFirstEmptySlot(item);
@@ -41,9 +41,9 @@ namespace Game.InventorySystem
             }
         }
 
-        public bool TryAdd(InventoryItem item, int slot = -1)
+        public bool TryAdd(IInventoryItem item, int slot = -1)
         {
-            if (ItemsCount >= Size || slot >= Size || slot < -1)
+            if (item == null || ItemsCount >= Size || slot >= Size || slot < -1)
                 return false;
 
             if (slot == -1)
@@ -54,19 +54,23 @@ namespace Game.InventorySystem
             return true;
         }
 
-        private void PlaceAtSlot(InventoryItem item, int index)
+        private void PlaceAtSlot(IInventoryItem item, int index)
         {
             var slot = _slots[index];
 
-            slot.DisplacementPlace(item, out var desplacedItem);
+            if (slot.IsEmpty)
+                slot.Place(item);
+            else
+            {
+                slot.DisplacementPlace(item, out var desplacedItem);
 
-            if (desplacedItem != null)
                 PlaceAtFirstEmptySlot(desplacedItem);
+            }
 
             ItemsCount++;
         }
 
-        private void PlaceAtFirstEmptySlot(InventoryItem item)
+        private void PlaceAtFirstEmptySlot(IInventoryItem item)
         {
             var emptySlot = GetEmptySlot();
 
@@ -81,26 +85,28 @@ namespace Game.InventorySystem
                 if (slot.IsEmpty)
                     return slot;
 
-            throw new Exception("Inventory has no one empty slot");
+            throw new InvalidOperationException("Inventory has no empty slots");
         }
 
-        public void Remove(InventoryItem item)
+        public void Remove(IInventoryItem item)
         {
             var slot = GetSlotWithItem(item);
             
             slot.Emptify();
+
+            ItemsCount--;
         }
 
-        private InventorySlot GetSlotWithItem(InventoryItem item)
+        private InventorySlot GetSlotWithItem(IInventoryItem item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             foreach (var slot in _slots)
                 if (slot.Item == item)
                     return slot;
 
-            throw new Exception($"Inventory has no one slot with item: {item.GetType()}");
+            throw new InvalidOperationException($"Inventory does not contain item of type {item.GetType()}");
         }
     }
 }

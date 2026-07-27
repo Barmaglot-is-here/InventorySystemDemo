@@ -27,7 +27,7 @@ namespace Game.UI
 
         private Equipment _equipment;
 
-        public event Action<InventoryItem> OnSlotDoubleClick;
+        public event Action<IInventoryItem> OnSlotDoubleClick;
 
         private void Awake()
         {
@@ -68,6 +68,6 @@ namespace Game.UI
                 slot.OnDoubleClick -= OnDoubleClick;
         }
 
-        private void OnDoubleClick(InventoryItem item) => OnSlotDoubleClick.Invoke(item);
+        private void OnDoubleClick(IInventoryItem item) => OnSlotDoubleClick.Invoke(item);
     }
 }

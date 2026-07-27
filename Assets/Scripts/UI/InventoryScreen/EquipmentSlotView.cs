@@ -9,7 +9,7 @@ namespace Game.UI
         [SerializeField]
         private GameObject _slotIcon;
 
-        protected override void OnPlace(InventoryItem item)
+        protected override void OnPlace(IInventoryItem item)
         {
             base.OnPlace(item);
 

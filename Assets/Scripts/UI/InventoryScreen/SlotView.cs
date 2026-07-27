@@ -18,9 +18,9 @@ namespace Game.UI
 
         private RectTransform IconRect => _icon.rectTransform;
 
-        public InventoryItem CurrentItem => _slot.Item;
+        public IInventoryItem CurrentItem => _slot.Item;
 
-        public event Action<InventoryItem> OnDoubleClick;
+        public event Action<IInventoryItem> OnDoubleClick;
 
         [Inject]
         public void Construct(Transform dragZone)
@@ -37,7 +37,7 @@ namespace Game.UI
             _slot.OnPlace += OnPlace;
         }
 
-        protected virtual void OnPlace(InventoryItem item)
+        protected virtual void OnPlace(IInventoryItem item)
         {
             if (item != null)
             {

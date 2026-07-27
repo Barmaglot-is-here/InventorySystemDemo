@@ -12,7 +12,7 @@ namespace Game.EquipmentSystem
             SlotType = slotType;
         }
 
-        protected override void ValidateItem(InventoryItem item)
+        protected override void ValidateItem(IInventoryItem item)
         {
             base.ValidateItem(item);
 
@@ -20,12 +20,12 @@ namespace Game.EquipmentSystem
                 throw new Exception($"Type mismatch. Excepted: {SlotType}");
         }
 
-        protected override bool IsItemValid(InventoryItem item) 
+        protected override bool IsItemValid(IInventoryItem item) 
             => base.IsItemValid(item) && IsTypeCorrect(item);
 
-        private bool IsTypeCorrect(InventoryItem item)
+        private bool IsTypeCorrect(IInventoryItem item)
         {
-            if (item is EquipmnentItem equipmnentItem)
+            if (item is IEquipmnentItem equipmnentItem)
                 return SlotType == equipmnentItem?.Type;
             else
                 return false;

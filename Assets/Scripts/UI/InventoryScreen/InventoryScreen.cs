@@ -26,9 +26,9 @@ namespace Game.UI
             _equipmentView.OnSlotDoubleClick += OnEquipmentSlotDoubleClick;
         }
 
-        private void OnInventorySlotDoubleClick(InventoryItem item)
+        private void OnInventorySlotDoubleClick(IInventoryItem item)
         {
-            if (item is not EquipmnentItem equipmnentItem)
+            if (item is not IEquipmnentItem equipmnentItem)
                 return;
 
             _inventory.Remove(item);
@@ -38,7 +38,7 @@ namespace Game.UI
                 _inventory.Add(displacedItem);
         }
 
-        private void OnEquipmentSlotDoubleClick(InventoryItem item)
+        private void OnEquipmentSlotDoubleClick(IInventoryItem item)
         {
             if (_inventory.TryAdd(item))
                 _equipment.Unequip(item);
