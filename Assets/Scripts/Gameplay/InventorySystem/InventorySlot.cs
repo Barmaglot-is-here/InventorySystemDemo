@@ -4,6 +4,8 @@ namespace Game.InventorySystem
 {
     public class InventorySlot : ISlotData
     {
+        protected virtual ItemValidator Validator { get; }
+
         private IInventoryItem _item;
 
         public IInventoryItem Item
@@ -20,6 +22,11 @@ namespace Game.InventorySystem
         public bool IsEmpty => Item == null;
 
         public event Action<IInventoryItem> OnPlace;
+
+        public InventorySlot()
+        {
+            Validator = new();
+        }
 
         public void Place(IInventoryItem item)
         {
@@ -47,19 +54,8 @@ namespace Game.InventorySystem
             return true;
         }
 
-        protected virtual void ValidateItem(IInventoryItem item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("Item is null. Use Emptify() to remove them");
-        }
-
-        protected virtual bool IsItemValid(IInventoryItem item)
-        {
-            if (item == null)
-                return false;
-
-            return true;
-        }
+        private void ValidateItem(IInventoryItem item) => Validator.ValidateItem(item);
+        private bool IsItemValid(IInventoryItem item) => Validator.IsItemValid(item);
 
         public void DisplacementPlace(IInventoryItem item, out IInventoryItem desplacedItem)
         {

@@ -32,7 +32,7 @@ namespace Game.UI
         {
             OnPlace(slot.Item);
 
-            _slot   = slot;
+            _slot = slot;
 
             _slot.OnPlace += OnPlace;
         }
